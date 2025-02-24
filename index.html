@@ -3,132 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UID</title>
-      <link rel="icon" type="image/png" href="https://cdn.dribbble.com/users/7549673/screenshots/17206704/media/1210a9d0ec8af427967e735935861eeb.png?resize=400x300&vertical=center" />
-
+    <title>Bitlabs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Variables de color para facilitar el mantenimiento */
+        :root {
+            --bg-dark: #232526;
+            --bg-light: #414345;
+            --container-bg: #333;
+            --text-light: #f0f0f0;
+            --text-grey: #b0b0b0;
+            /* Colores más vibrantes */
+            --green-vibrant: #8df27a; /* Verde más brillante */
+            --green-hover: #75d962;
+            --input-bg: #444;
+            --input-border: #555;
+            --title-color: #a0ff87;  /* Título verde más brillante */
+        }
+
         body {
-            font-family: 'Poppins', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
-            color: #eaeaea;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
+            color: var(--text-light);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .container {
-            background: #333333;
+            background: var(--container-bg);
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
             text-align: center;
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
-            color: #b6e3a1;
+            color: var(--title-color); /* Usando el nuevo color para el título */
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Añadiendo un sutil resplandor */
         }
 
         p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: #a1a1a1;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: var(--text-grey);
         }
 
         input[type="text"] {
-            width: 94%;
+            width: calc(100% - 24px);
             padding: 12px;
             margin: 10px 0;
-            border: 1px solid #444444;
-            border-radius: 8px;
-            background: #444444;
-            color: #f0f0f0;
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            background: var(--input-bg);
+            color: var(--text-light);
             font-size: 16px;
+            transition: border-color 0.2s ease;
+            box-sizing: border-box;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border: 1px solid #b6e3a1;
-            background: #555555;
+            border-color: var(--green-vibrant);
+            background: #555;
         }
 
         button {
-            background: #4caf50;
-            color: #ffffff;
-            padding: 12px 24px;
+            background: var(--green-vibrant); /* Usando el nuevo color para los botones */
+            color: #222;
+            padding: 14px 28px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 17px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Añadiendo una ligera sombra */
+        }
+
+        button:hover {
+            background-color: var(--green-hover);
         }
 
         .output {
-            margin-top: 20px;
-            padding: 12px;
-            background: #444444;
-            border: 1px solid #444444;
-            border-radius: 8px;
+            margin-top: 25px;
+            padding: 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
             word-wrap: break-word;
-            font-size: 14px;
+            font-size: 15px;
             text-align: left;
-            color: #f0f0f0;
+            color: var(--text-light);
             opacity: 0;
-            animation: fadeIn 0.6s forwards;
+            animation: fadeIn 0.5s forwards;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
         .notification {
-            margin-top: 10px;
-            padding: 10px;
-            background: #4caf50;
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 8px;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--green-vibrant); /* Usando el nuevo color para la notificación */
+            color: #222;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 10px;
             display: none;
             text-align: center;
         }
 
+        .update-btn {
+            background: #5d5d5d;
+            color: var(--text-light);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 17px;
+            margin-bottom: 25px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: background-color 0.2s ease;
+        }
 
-.update-btn {
-    background: #5d5d5d;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 20px;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-}
-        
+        .update-btn:hover {
+            background-color: #4a4a4a;
+        }
+
+        /* Media query para pantallas más pequeñas */
+        @media (max-width: 500px) {
+            .container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            input[type="text"],
+            button,
+            .update-btn {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="https://unevennesx.github.io/UID-MAID/" class="update-btn">New Version</a>
-
+        <a href="https://unevennesx.github.io/UID-MAID/" class="update-btn" target="_blank">Nueva Versión</a>
         <h1>Extractor de UID</h1>
-        <p>Pega el enlace original abajo para extraer el UID y generar un nuevo enlace:</p>
+        <p>Pega el enlace original para extraer el UID y generar un nuevo enlace:</p>
         <input type="text" id="userLink" placeholder="Pega tu enlace aquí">
         <button onclick="generateLink()">Generar y Copiar Enlace</button>
-
         <div id="output" class="output" hidden></div>
         <div id="notification" class="notification">¡Enlace copiado al portapapeles!</div>
     </div>
@@ -139,12 +192,11 @@
             const outputDiv = document.getElementById('output');
             const notificationDiv = document.getElementById('notification');
 
-            const uidMatch = inputLink.value.match(/uid=([a-zA-Z0-9-]+)/);
+            const uuidMatch = inputLink.value.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/);
 
-            if (uidMatch && uidMatch[1]) {
-                const uid = uidMatch[1];
-            const generatedLink = `https://web.bitlabs.ai/?token=966b75d5-780f-41a0-8bcd-09094b716259&uid=${uid}`;
-
+            if (uuidMatch && uuidMatch[0]) {
+                const uuid = uuidMatch[0];
+                const generatedLink = `https://web.bitlabs.ai/?token=966b75d5-780f-41a0-8bcd-09094b716259&uid=${uuid}`;
 
                 outputDiv.textContent = generatedLink;
                 outputDiv.hidden = false;
@@ -158,12 +210,12 @@
                     setTimeout(() => {
                         inputLink.value = '';
                         outputDiv.hidden = true;
-                    }, 20000); // Limpia los datos tras 20 segundos
+                    }, 20000);
                 }).catch(err => {
                     console.error('Error al copiar: ', err);
                 });
             } else {
-                outputDiv.textContent = "Enlace inválido. Asegúrate de que contenga un parámetro 'uid'.";
+                outputDiv.textContent = "Enlace inválido. Asegúrate de que contenga un UUID.";
                 outputDiv.hidden = false;
             }
         }
