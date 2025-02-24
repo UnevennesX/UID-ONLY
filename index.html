@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitlabs</title>
+    <title>Extractor de UID</title>
     <link rel="icon" type="image/png" href="https://cdn.dribbble.com/users/7549673/screenshots/17206704/media/1210a9d0ec8af427967e735935861eeb.png?resize=400x300&vertical=center" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Variables de color para facilitar el mantenimiento */
+        /* Variables de color */
         :root {
             --bg-dark: #232526;
             --bg-light: #414345;
             --container-bg: #333;
             --text-light: #f0f0f0;
             --text-grey: #b0b0b0;
-            /* Colores más vibrantes */
-            --green-vibrant: #8df27a; /* Verde más brillante */
+            --green-vibrant: #8df27a;
             --green-hover: #75d962;
             --input-bg: #444;
             --input-border: #555;
-            --title-color: #a0ff87;  /* Título verde más brillante */
+            --title-color: #a0ff87;
+            --error-color: #f44336; /* Color para los errores */
         }
 
         body {
@@ -50,9 +50,9 @@
         h1 {
             font-size: 2.5rem;
             margin-bottom: 20px;
-            color: var(--title-color); /* Usando el nuevo color para el título */
+            color: var(--title-color);
             font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Añadiendo un sutil resplandor */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         p {
@@ -81,7 +81,7 @@
         }
 
         button {
-            background: var(--green-vibrant); /* Usando el nuevo color para los botones */
+            background: var(--green-vibrant);
             color: #222;
             padding: 14px 28px;
             border: none;
@@ -90,7 +90,7 @@
             font-size: 17px;
             font-weight: 500;
             transition: background-color 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Añadiendo una ligera sombra */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         button:hover {
@@ -125,12 +125,24 @@
         .notification {
             margin-top: 12px;
             padding: 12px;
-            background: var(--green-vibrant); /* Usando el nuevo color para la notificación */
+            background: var(--green-vibrant);
             color: #222;
             font-size: 15px;
             font-weight: 500;
             border-radius: 10px;
             display: none;
+            text-align: center;
+        }
+
+        .error {
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--error-color); /* Fondo rojo */
+            color: var(--text-light);      /* Texto blanco */
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 10px;
+            display: none;                 /* Oculto por defecto */
             text-align: center;
         }
 
@@ -185,6 +197,7 @@
         <button onclick="generateLink()">Generar y Copiar Enlace</button>
         <div id="output" class="output" hidden></div>
         <div id="notification" class="notification">¡Enlace copiado al portapapeles!</div>
+        <div id="error" class="error"></div> <!-- Contenedor para los mensajes de error -->
     </div>
 
     <script>
@@ -192,8 +205,37 @@
             const inputLink = document.getElementById('userLink');
             const outputDiv = document.getElementById('output');
             const notificationDiv = document.getElementById('notification');
+            const errorDiv = document.getElementById('error'); // Obtener el elemento de error
 
-            const uuidMatch = inputLink.value.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/);
+            // Limpiar mensajes anteriores
+            outputDiv.hidden = true;
+            notificationDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = ''; // Limpiar el contenido del error
+
+            const linkValue = inputLink.value.trim(); // Obtener el valor del input y eliminar espacios en blanco
+
+            if (!linkValue) {
+                errorDiv.textContent = "Por favor, introduce un enlace.";
+                errorDiv.style.display = 'block';
+                return; // Detener la función
+            }
+
+            // Expresión regular para validar una URL con UUID
+            const urlRegex = /(https?:\/\/[^\s]+)/i;
+
+            const urlMatch = linkValue.match(urlRegex); // Buscar una URL dentro del texto
+
+            if (!urlMatch) {
+                errorDiv.textContent = "No se encontró una URL válida en el texto ingresado.";
+                errorDiv.style.display = 'block';
+                return; // Detener la función
+            }
+
+            const url = urlMatch[0]; // Obtener la URL encontrada
+
+            // Detecta el UUID en el enlace
+            const uuidMatch = url.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/);
 
             if (uuidMatch && uuidMatch[0]) {
                 const uuid = uuidMatch[0];
@@ -214,10 +256,12 @@
                     }, 20000);
                 }).catch(err => {
                     console.error('Error al copiar: ', err);
+                    errorDiv.textContent = "Error al copiar al portapapeles: " + err.message;
+                    errorDiv.style.display = 'block';
                 });
             } else {
-                outputDiv.textContent = "Enlace inválido. Asegúrate de que contenga un UUID.";
-                outputDiv.hidden = false;
+                errorDiv.textContent = "Enlace inválido. Asegúrate de que contenga un UUID válido.";
+                errorDiv.style.display = 'block';
             }
         }
     </script>
